@@ -5,6 +5,7 @@ How to take beginners from "never cloned a repo" to driving the swerve chassis w
 **The links**
 
 - [Slides: How software gets made](slides.html) (press N for the speaker notes, F for full screen)
+- [Installs and links](links.html): what each laptop needs, with download links
 - [Robot code cheat sheet](cheat-sheet.html)
 - [GitHub Desktop cheat sheet](github-desktop.html)
 - The code: https://github.com/mikegrundvig/2611-first-bot
@@ -28,7 +29,7 @@ How to take beginners from "never cloned a repo" to driving the swerve chassis w
 - [ ] Check memory: IntelliJ wants 8 GB or more. Under 8 GB, use VS Code.
 
 ### The bench laptop (yours, or one mentor laptop)
-- [ ] Windows, with Phoenix Tuner X **Preview** (2027 version, Microsoft Store).
+- [ ] Windows, with Phoenix Tuner X **Preview** (2027 version, Microsoft Store: https://apps.microsoft.com/detail/9n17ns6nm06v; it installs beside the regular Tuner X).
 - [ ] 2611-first-bot cloned and built.
 - [ ] This is the only laptop that talks to the chassis. Students push their branch; the bench laptop pulls it and runs it.
 

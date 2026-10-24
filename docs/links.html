@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Installs and Links</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* What to install, in the order you need it, then where to read more. Each entry: name, why, link. */
+:root { --bg: #F7F5EF; --card: #FFFFFF; --ink: #1F2733; --muted: #4A5568; --line: #D9D4C7; --navy: #14213D; --accent: #B4501A; --code-bg: #EFEBE1; }
+@media (prefers-color-scheme: dark) { :root { --bg: #11192C; --card: #18233A; --ink: #E8E6DF; --muted: #AEB8C8; --line: #2C3A55; --navy: #E8E6DF; --accent: #F2A055; --code-bg: #0E1524; color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 'Rubik', Arial, sans-serif; padding-block: 24px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+header { border-bottom: 3px solid var(--navy); padding-bottom: 10px; }
+h1 { font-size: 30px; color: var(--navy); margin: 8px 0 4px; }
+header p { margin: 0; color: var(--muted); }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin: 8px 0 0; }
+.list { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.item { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 12px 16px; border-top: 1px solid var(--line); }
+.item:first-child { border-top: none; }
+.item a.name { font-weight: 700; color: var(--navy); text-decoration: none; }
+.item a.name:hover, .item a.name:focus-visible { color: var(--accent); text-decoration: underline; }
+.item .why { color: var(--muted); margin: 0; }
+.tag { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); margin-left: 6px; vertical-align: 2px; }
+.tag.must { border-color: var(--accent); color: var(--accent); }
+code { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 14px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+a { color: var(--accent); }
+.note { color: var(--muted); font-size: 14px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <p style="margin:0"><a href="./">← Course home</a></p>
+  <header>
+    <h1>Installs and links</h1>
+    <p>Everything is free. Windows is what the team's laptops run; most of it works on a Mac too.</p>
+  </header>
+
+  <h2>Every student laptop</h2>
+  <div class="list">
+    <div class="item">
+      <div><a class="name" href="https://desktop.github.com/">GitHub Desktop</a><span class="tag must">Needed</span></div>
+      <p class="why">Clone, branch, commit, push and open pull requests without typing Git commands. Sign in with your GitHub account.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://www.jetbrains.com/idea/download/">IntelliJ IDEA</a><span class="tag must">Needed: this or VS Code</span></div>
+      <p class="why">The Java editor most companies use. It understands the whole project, and our projects come with its run buttons ready. Wants 8 GB of memory or more.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://github.com/wpilibsuite/allwpilib/releases/tag/v2027.0.0-alpha-7">WPILib 2027 installer (alpha 7)</a><span class="tag">Or this</span></div>
+      <p class="why">WPILib's own VS Code with its extension and tools. Pick it instead of IntelliJ on a laptop with less memory. Open the project, accept the recommended extensions, then restart VS Code once.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://github.com/mikegrundvig/2611-first-bot">The course code</a><span class="tag must">Needed</span></div>
+      <p class="why">Clone it in GitHub Desktop: File › Clone repository › URL, then <code>https://github.com/mikegrundvig/2611-first-bot</code>. Its first build downloads about 1 GB, so do it on good internet.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://git-scm.com/download/win">Git for Windows</a><span class="tag">Optional</span></div>
+      <p class="why">Only for typing <code>git</code> commands in a terminal. GitHub Desktop brings its own Git.</p>
+    </div>
+  </div>
+  <p class="note">Java doesn't need installing: the build downloads the Java it needs.</p>
+
+  <h2>The bench laptop (the one that drives the chassis)</h2>
+  <div class="list">
+    <div class="item">
+      <div><a class="name" href="https://apps.microsoft.com/detail/9n17ns6nm06v">Phoenix Tuner X Preview</a><span class="tag must">Needed</span></div>
+      <p class="why">CTRE's tool for the motors, CANcoders, Pigeon and the CANivore: firmware, CAN IDs, factory defaults, live plots. The <b>Preview</b> is the version for the 2027 firmware (26.70.x); it installs next to the regular Tuner X.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://github.com/Mechanical-Advantage/AdvantageScope/releases/tag/v27.0.0-alpha-6">AdvantageScope 2027 alpha</a><span class="tag">Useful</span></div>
+      <p class="why">Opens the robot's logs: graphs, the field, and the robot in 3D. Use the 2027 alpha (v27.0.0-alpha-6), which reads the 2027 logs.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://github.com/wpilibsuite/FirstDriverStation-Public">2027 Driver Station</a><span class="tag">Later</span></div>
+      <p class="why">Drives the real robot once it has a Systemcore. On the bench, WPILib's simulator window enables the chassis instead.</p>
+    </div>
+  </div>
+
+  <h2>Learning</h2>
+  <div class="list">
+    <div class="item">
+      <div><a class="name" href="https://dev.java/learn/">Learn Java (dev.java)</a></div>
+      <p class="why">The official Java tutorials, from the people who make Java.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://docs.wpilib.org/">WPILib documentation</a></div>
+      <p class="why">How FRC robot code works: the robot loop, commands, the simulator, deploying.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://v6.docs.ctr-electronics.com/">CTRE Phoenix 6 documentation</a></div>
+      <p class="why">Talon FX motors, CANcoders, the Pigeon 2 and the CANivore, with Java examples.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://docs.advantagekit.org/">AdvantageKit documentation</a></div>
+      <p class="why">How the robot logs everything it does, and replays a log through new code.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://docs.github.com/en/desktop">GitHub Desktop documentation</a></div>
+      <p class="why">GitHub's own guide, where our cheat sheet's screenshots come from.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://skills.github.com/">GitHub Skills</a></div>
+      <p class="why">Free, hands-on courses that run inside GitHub: your first pull request, resolving a conflict, GitHub Actions.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://www.chiefdelphi.com/">Chief Delphi</a></div>
+      <p class="why">The FRC community forum. Search it before asking: most questions have been answered there.</p>
+    </div>
+  </div>
+
+  <h2>2027 and Systemcore</h2>
+  <div class="list">
+    <div class="item">
+      <div><a class="name" href="https://github.com/wpilibsuite/SystemcoreTesting">Systemcore testing (WPILib)</a></div>
+      <p class="why">The current alpha versions of everything (WPILib, CTRE, REV, AdvantageKit, PhotonVision) and which work together.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://github.com/wpilibsuite/SystemcoreTesting/blob/main/CTR-Phoenix.md">CTRE's 2027 notes</a></div>
+      <p class="why">Phoenix 6 for 2027: firmware, Tuner X Preview, and examples for the alpha.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://github.com/CrossTheRoadElec/Phoenix6-Examples/tree/2027_alpha7">Phoenix 6 examples for 2027</a></div>
+      <p class="why">CTRE's example robot programs for this alpha, swerve included.</p>
+    </div>
+  </div>
+
+  <h2>Our robot's parts and tools</h2>
+  <div class="list">
+    <div class="item">
+      <div><a class="name" href="https://www.swervedrivespecialties.com/">Swerve Drive Specialties</a></div>
+      <p class="why">Makers of the MK5n swerve modules on the chassis: dimensions, gear ratios, wiring.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://github.com/mikegrundvig/frc-robot-runtime/blob/main/docs/bench.md">Bench guide</a></div>
+      <p class="why">Driving the real chassis from a laptop: what to set up, the safety checklist, and what to do when something's wrong.</p>
+    </div>
+    <div class="item">
+      <div><a class="name" href="https://mikegrundvig.github.io/frc-camera-pose/">Camera placement tool</a></div>
+      <p class="why">Try where AprilTag cameras go on a robot, in the browser: what each one sees, and the best layouts.</p>
+    </div>
+  </div>
+</main>
+</body>
+</html>

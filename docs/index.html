@@ -19,6 +19,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 'Rub
 main { padding: 32px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 28px; }
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+a.card.wide { grid-column: 1 / -1; }
 a.card { display: flex; flex-direction: column; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; color: inherit; text-decoration: none; }
 a.card:hover, a.card:focus-visible { border-color: var(--accent); outline: none; }
 a.card .kind { font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; }
@@ -41,6 +42,11 @@ a { color: var(--accent); }
 </header>
 <main>
   <div class="grid">
+    <a class="card wide" href="links.html">
+      <span class="kind">Start here</span>
+      <h2>Installs and links</h2>
+      <p>What to install on each laptop (GitHub Desktop, an editor, Phoenix Tuner X) and where to read more.</p>
+    </a>
     <a class="card" href="slides.html">
       <span class="kind">Slides</span>
       <h2>How software gets made</h2>
