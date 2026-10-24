@@ -72,10 +72,10 @@ Two checks run on every pull request, and both must pass before it can merge:
 
 - **Build** compiles the code and runs it through Gradle on Linux and on Windows. A red X here
   means it doesn't compile: open the check, find the first error, and fix that line.
-- **AI review** reads your change like a mentor and leaves comments on it. It only blocks a change
-  that could be unsafe on the real robot (too much power, current limits removed), a bug that makes
-  the robot do something you didn't mean, or a change to the build files, which a mentor makes.
-  Read its comments either way: they explain why.
+- **AI review** reads your change like a mentor and comments on it. Each comment starts with
+  **Must fix** or **Suggestion**. While any must-fix is open, the check fails and the pull request
+  can't merge. Its summary comment lists what's left. Suggestions are ideas, and never block.
 
-Push new commits to the same branch to update the pull request; both checks run again. A mentor
-still reviews and merges.
+To fix something, push new commits to the same branch. Both checks run again, and the review says
+which points are now fixed. Mark each comment's conversation **Resolved** once you've dealt with
+it. A mentor still reviews and merges.
