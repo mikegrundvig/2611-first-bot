@@ -1,0 +1,6 @@
+plugins {
+    // Downloads the Java version the build asks for (build.gradle), so nothing needs installing.
+    id "org.gradle.toolchains.foojay-resolver-convention" version "1.0.0"
+}
+
+rootProject.name = "2611-first-bot"

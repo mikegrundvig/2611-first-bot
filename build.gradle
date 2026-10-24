@@ -1,0 +1,36 @@
+// The robot program's build. GradleRIO is WPILib's Gradle plugin: it brings WPILib, the vendor
+// libraries in vendordeps/ (here only CTRE's Phoenix 6), and the simulator.
+plugins {
+    id "java"
+    id "application"
+    id "org.wpilib.GradleRIO" version "2027.0.0-alpha-7"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+dependencies {
+    implementation wpi.java.deps.wpilib()
+    implementation wpi.java.vendor.java()
+    nativeDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.desktop)
+    nativeDebug wpi.java.vendor.jniDebug(wpi.platforms.desktop)
+    simulationDebug wpi.sim.enableDebug()
+    nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
+    nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
+    simulationRelease wpi.sim.enableRelease()
+}
+
+application.mainClass = "frc.robot.Main"
+wpi.java.configureApplication(application)
+
+// ./gradlew run          the simulator: no robot needed
+// ./gradlew run -PhwSim  the real chassis, through its CANivore plugged into this laptop
+//
+// -PhwSim is CTRE's hardware-attached simulation: with it, WPILib's build picks Phoenix's
+// libraries that talk to a real CANivore instead of simulated devices. Either way the program
+// starts disabled: enable it from WPILib's simulator window.
+wpi.sim.addGui().defaultEnabled = true
+wpi.sim.addDriverstation()
