@@ -1,0 +1,16 @@
+# Weekly pull requests for newer test libraries and CI actions. WPILib, the vendor libraries
+# (vendordeps/) and the robot program library are updated by a mentor, together, per release.
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "org.wpilib*"
+      - dependency-name: "com.michaelgrundvig.frc*"
+      - dependency-name: "gradle-wrapper"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

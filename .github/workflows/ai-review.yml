@@ -28,7 +28,9 @@ concurrency:
 
 jobs:
   ai-review:
-    if: ${{ !github.event.pull_request.draft }}
+    # Dependabot's version bumps get no secrets to review with; the Build check covers them, and a
+    # skipped check counts as passed.
+    if: ${{ !github.event.pull_request.draft && github.event.pull_request.user.login != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       # A skipped check counts as passed, so a fork's pull request fails here rather than skipping.
