@@ -40,7 +40,7 @@ jobs:
           echo "::error::AI review runs only on branches pushed to this repository. Ask a mentor to review this pull request."
           exit 1
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
 

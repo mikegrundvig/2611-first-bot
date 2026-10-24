@@ -22,7 +22,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Gradle itself needs a Java to start; the build then downloads the Java 25 it compiles with.
       - uses: actions/setup-java@v5
