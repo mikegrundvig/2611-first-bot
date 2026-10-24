@@ -136,6 +136,7 @@ dd { margin: 0; color: var(--muted); }
       <h2>When something goes wrong</h2>
       <div class="scroll"><table>
         <tr><td>Red underline, build fails</td><td>Compile error. Read the <b>first</b> error: it names the file and line.</td></tr>
+        <tr><td><code>JAVA_HOME is not set</code></td><td>No Java yet, or the terminal was open before Java was installed. Install Java 25 with <b>Set JAVA_HOME</b> turned on, then reopen the terminal.</td></tr>
         <tr><td><code>wpiutiljni could not be loaded</code></td><td>Started without Gradle. Use <code>gradlew.bat run</code>.</td></tr>
         <tr><td><code>CANivore … not seen</code></td><td>Check the USB cable and that Phoenix Tuner X lists the CANivore.</td></tr>
         <tr><td><code>CAN frame not received</code></td><td>Wrong CAN ID, or the device has no power. Compare the IDs with Tuner X.</td></tr>

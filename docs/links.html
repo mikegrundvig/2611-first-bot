@@ -44,12 +44,16 @@ a { color: var(--accent); }
       <p class="why">Clone, branch, commit, push and open pull requests without typing Git commands. Sign in with your GitHub account.</p>
     </div>
     <div class="item">
+      <div><a class="name" href="https://adoptium.net/temurin/releases/?version=25&amp;os=windows&amp;arch=x64&amp;package=jdk">Java 25 (Eclipse Temurin JDK)</a><span class="tag must">Needed</span></div>
+      <p class="why">Gradle needs a Java installed just to start. Download the Windows <b>.msi</b>, and in the installer turn on <b>Set JAVA_HOME variable</b> (it's off by default). Then close and reopen any terminal or editor.</p>
+    </div>
+    <div class="item">
       <div><a class="name" href="https://www.jetbrains.com/idea/download/">IntelliJ IDEA</a><span class="tag must">Needed: this or VS Code</span></div>
       <p class="why">The Java editor most companies use. It understands the whole project, and our projects come with its run buttons ready. Wants 8 GB of memory or more.</p>
     </div>
     <div class="item">
       <div><a class="name" href="https://github.com/wpilibsuite/allwpilib/releases/tag/v2027.0.0-alpha-7">WPILib 2027 installer (alpha 7)</a><span class="tag">Or this</span></div>
-      <p class="why">WPILib's own VS Code with its extension and tools. Pick it instead of IntelliJ on a laptop with less memory. Open the project, accept the recommended extensions, then restart VS Code once.</p>
+      <p class="why">WPILib's own VS Code, with the Java and WPILib extensions already in it. Pick it instead of IntelliJ on a laptop with less memory. A plain VS Code works too: when you open the project it offers the Java and WPILib extensions; say yes, then restart VS Code once.</p>
     </div>
     <div class="item">
       <div><a class="name" href="https://github.com/mikegrundvig/2611-first-bot">The course code</a><span class="tag must">Needed</span></div>
@@ -60,7 +64,7 @@ a { color: var(--accent); }
       <p class="why">Only for typing <code>git</code> commands in a terminal. GitHub Desktop brings its own Git.</p>
     </div>
   </div>
-  <p class="note">Java doesn't need installing: the build downloads the Java it needs.</p>
+  <p class="note">Gradle itself doesn't need installing: <code>gradlew.bat</code> downloads the right Gradle the first time. It only needs the Java above to start.</p>
 
   <h2>The bench laptop (the one that drives the chassis)</h2>
   <div class="list">

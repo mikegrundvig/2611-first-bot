@@ -16,6 +16,8 @@ They are in `src/main/java/frc/robot/`. Each starts with a few sentences saying 
 
 ## Get it
 
+You need Java 25 and GitHub Desktop (or Git) installed first: the [installs page](https://mikegrundvig.github.io/2611-first-bot/links.html) has the links. Gradle downloads itself.
+
 ```bash
 git clone https://github.com/mikegrundvig/2611-first-bot.git
 ```

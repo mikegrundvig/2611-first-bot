@@ -22,6 +22,7 @@ How to take beginners from "never cloned a repo" to driving the swerve chassis w
 - [ ] Add each one as a collaborator on 2611-first-bot (Settings › Collaborators), or have them fork it. Collaborators must accept the email invite.
 
 ### Student laptops (Windows)
+- [ ] Java 25 (Eclipse Temurin JDK, the Windows .msi: https://adoptium.net/temurin/releases/?version=25), with **Set JAVA_HOME variable** turned on in the installer (it's off by default). Gradle needs a Java just to start; without it `gradlew.bat` stops with `JAVA_HOME is not set`. Gradle itself needs no install.
 - [ ] Git for Windows: optional, only for typing `git` commands. GitHub Desktop brings its own.
 - [ ] GitHub Desktop, signed in (File › Options › Accounts).
 - [ ] An editor: IntelliJ IDEA (preferred) or WPILib's VS Code. VS Code: accept the recommended extensions on first open, then restart VS Code once.
@@ -160,6 +161,7 @@ Each pair makes one change on their own branch, pushes it, and watches it run on
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Red underline, build fails | Typo or missing `;` | Read the **first** error; it names the file and line |
+| `JAVA_HOME is not set` | No Java, or the terminal predates the install | Install Java 25 (Temurin .msi) with Set JAVA_HOME on; reopen the terminal |
 | `wpiutiljni could not be loaded` | Started from the Run link beside `main` | Use the run task/button or `gradlew.bat run` |
 | First build takes forever | Downloading ~1 GB | Do it before the session, on good internet |
 | `CANivore … not seen` | USB, or name mismatch | Check cable, Tuner X lists it, name matches the code |
