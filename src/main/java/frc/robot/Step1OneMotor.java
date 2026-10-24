@@ -7,7 +7,7 @@ import org.wpilib.driverstation.XboxController;
 import org.wpilib.framework.TimedRobot;
 
 /**
- * Step 1: one motor. The gamepad's left stick spins the front left wheel, at 20% power at most.
+ * Step 1: one motor. The gamepad's left stick spins the front left wheel, at 30% power at most.
  * Push the stick forward and the wheel spins; pull it back and it spins the other way.
  */
 public class Step1OneMotor extends TimedRobot {
@@ -21,7 +21,7 @@ public class Step1OneMotor extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double stick = -gamepad.getLeftY(); // pushed forward reads negative, so flip it
-    double power = stick * 0.5; // 20% at most
+    double power = stick * 0.3; // 30% at most: the bench safety limit
     driveMotor.setControl(new DutyCycleOut(power));
   }
 }
