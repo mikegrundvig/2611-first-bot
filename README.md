@@ -65,3 +65,17 @@ moves, check them in Phoenix Tuner X.
 
 **Run in simulator** (or `gradlew.bat run`) runs the same program with pretend motors, no robot
 needed. Nothing moves that you can see, but you can check that a step starts and enables.
+
+## When you open a pull request
+
+Two checks run on every pull request, and both must pass before it can merge:
+
+- **Build** compiles the code and runs it through Gradle on Linux and on Windows. A red X here
+  means it doesn't compile: open the check, find the first error, and fix that line.
+- **AI review** reads your change like a mentor and leaves comments on it. It only blocks a change
+  that could be unsafe on the real robot (too much power, current limits removed), a bug that makes
+  the robot do something you didn't mean, or a change to the build files, which a mentor makes.
+  Read its comments either way: they explain why.
+
+Push new commits to the same branch to update the pull request; both checks run again. A mentor
+still reviews and merges.

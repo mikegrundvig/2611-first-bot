@@ -1,0 +1,43 @@
+# Builds the robot program on every pull request and every push to main, on Linux and on Windows
+# (the students' laptops), so code that doesn't compile can't be merged.
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+
+      # Gradle itself needs a Java to start; the build then downloads the Java 25 it compiles with.
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # Caches Gradle's downloads (WPILib, Phoenix, Java) between runs.
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Build (Linux)
+        if: runner.os != 'Windows'
+        run: ./gradlew build
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\gradlew.bat build

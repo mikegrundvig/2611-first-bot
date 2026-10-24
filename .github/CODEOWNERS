@@ -1,0 +1,6 @@
+# Changes to the build, the checks and the libraries need a mentor's review.
+/.github/        @mikegrundvig
+/build.gradle    @mikegrundvig
+/settings.gradle @mikegrundvig
+/gradle/         @mikegrundvig
+/vendordeps/     @mikegrundvig
