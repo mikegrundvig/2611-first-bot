@@ -6,6 +6,9 @@ on:
   pull_request:
   push:
     branches: [main]
+    # The course pages (docs/) aren't part of the robot program. Pull requests still always build,
+    # so the required check is never missing.
+    paths-ignore: ["docs/**"]
 
 permissions:
   contents: read

@@ -1,5 +1,7 @@
 # A first robot
 
+Course pages, slides and cheat sheets: https://mikegrundvig.github.io/2611-first-bot/
+
 Four very short robot programs for the swerve test chassis. Each one adds one idea to the last:
 
 | Step | File | What it does |

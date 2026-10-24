@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>First Robot Course</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* The course's front door: what this is, then the four pages, then the code. */
+:root { --bg: #F7F5EF; --card: #FFFFFF; --ink: #1F2733; --muted: #4A5568; --line: #D9D4C7; --navy: #14213D; --accent: #B4501A; --hero: #14213D; --hero-ink: #F7F5EF; --hero-muted: #BFC8D6; --orange: #F28C28; }
+@media (prefers-color-scheme: dark) { :root { --bg: #11192C; --card: #18233A; --ink: #E8E6DF; --muted: #AEB8C8; --line: #2C3A55; --navy: #E8E6DF; --accent: #F2A055; --hero: #0B1222; color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 'Rubik', Arial, sans-serif; }
+.hero { background: var(--hero); color: var(--hero-ink); padding: 48px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); }
+.hero div, main { max-width: 960px; margin: 0 auto; }
+.hero .cmd { font-family: 'JetBrains Mono', 'Courier New', monospace; color: var(--orange); margin: 0 0 12px; }
+.hero h1 { font-size: clamp(32px, 6vw, 52px); line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+.hero p { color: var(--hero-muted); max-width: 60ch; margin: 0; font-size: 18px; }
+main { padding: 32px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 28px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+a.card { display: flex; flex-direction: column; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; color: inherit; text-decoration: none; }
+a.card:hover, a.card:focus-visible { border-color: var(--accent); outline: none; }
+a.card .kind { font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; }
+a.card h2 { margin: 0; font-size: 22px; color: var(--navy); }
+a.card p { margin: 0; color: var(--muted); }
+.code { border-top: 2px solid var(--line); padding-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+.code h2 { margin: 0; font-size: 18px; color: var(--navy); }
+.code p { margin: 0; color: var(--muted); }
+code { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 14px; background: var(--card); border: 1px solid var(--line); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div>
+    <p class="cmd">$ gradlew run -PhwSim</p>
+    <h1>First robot course</h1>
+    <p>From your first clone to driving a swerve chassis with code you wrote, one small step at a time.</p>
+  </div>
+</header>
+<main>
+  <div class="grid">
+    <a class="card" href="slides.html">
+      <span class="kind">Slides</span>
+      <h2>How software gets made</h2>
+      <p>Compiling, Gradle, Git, branches, pull requests, CI and releases. Arrow keys to move, N for notes, F for full screen.</p>
+    </a>
+    <a class="card" href="cheat-sheet.html">
+      <span class="kind">Cheat sheet</span>
+      <h2>Robot code commands</h2>
+      <p>Gradle and Git commands, where things are in the project, and what to do when something goes wrong.</p>
+    </a>
+    <a class="card" href="github-desktop.html">
+      <span class="kind">Cheat sheet</span>
+      <h2>GitHub Desktop</h2>
+      <p>Clone, branch, commit, push and open a pull request, with a screenshot for every step.</p>
+    </a>
+    <a class="card" href="mentor-guide.html">
+      <span class="kind">Mentors</span>
+      <h2>Mentor guide</h2>
+      <p>What to set up before the first session, each session's plan, and a troubleshooting table.</p>
+    </a>
+  </div>
+  <section class="code">
+    <h2>The code</h2>
+    <p>The four steps live in the repository, ready to clone:</p>
+    <p><code>https://github.com/mikegrundvig/2611-first-bot</code></p>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mentor Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* The guide's Markdown (mentor-guide.md), rendered in the course's palette. */
+:root { --bg: #F7F5EF; --card: #FFFFFF; --ink: #1F2733; --muted: #4A5568; --line: #D9D4C7; --navy: #14213D; --accent: #B4501A; --code-bg: #EFEBE1; }
+@media (prefers-color-scheme: dark) { :root { --bg: #11192C; --card: #18233A; --ink: #E8E6DF; --muted: #AEB8C8; --line: #2C3A55; --navy: #E8E6DF; --accent: #F2A055; --code-bg: #0E1524; color-scheme: dark; } }
+body { background: var(--bg); color: var(--ink); font: 16px/1.6 'Rubik', Arial, sans-serif; margin: 0; padding: 24px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
+main { max-width: 780px; margin: 0 auto; }
+h1 { color: var(--navy); font-size: 32px; margin: 8px 0 12px; }
+h2 { color: var(--navy); font-size: 22px; margin: 32px 0 8px; border-top: 2px solid var(--line); padding-top: 20px; }
+h3 { color: var(--accent); font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; margin: 20px 0 6px; }
+a { color: var(--accent); }
+code { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 14px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+li input[type=checkbox] { margin-right: 6px; }
+hr { border: none; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 14px; min-width: 600px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--card); }
+</style>
+</head>
+<body>
+<main>
+<p><a href="./">← Course home</a></p>
+<div id="guide">Loading the guide…</div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+fetch('mentor-guide.md')
+  .then((r) => r.text())
+  .then((md) => {
+    const guide = document.getElementById('guide');
+    guide.innerHTML = marked.parse(md, { gfm: true });
+    for (const t of guide.querySelectorAll('table')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'scroll';
+      t.replaceWith(wrap);
+      wrap.appendChild(t);
+    }
+  })
+  .catch(() => { document.getElementById('guide').textContent = 'The guide failed to load: open mentor-guide.md instead.'; });
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GitHub Desktop Cheat Sheet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column of numbered steps in the order of a real change, each a short instruction beside its screenshot; reference sections after. */
+:root {
+  --bg: #F7F5EF;
+  --card: #FFFFFF;
+  --ink: #1F2733;
+  --muted: #4A5568;
+  --line: #D9D4C7;
+  --navy: #14213D;
+  --accent: #B4501A;
+  --code-bg: #EFEBE1;
+  --shot-bg: #FFFFFF;
+  --font-body: 'Rubik', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11192C; --card: #18233A; --ink: #E8E6DF; --muted: #AEB8C8; --line: #2C3A55;
+    --navy: #E8E6DF; --accent: #F2A055; --code-bg: #0E1524; --shot-bg: #F7F5EF; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11192C; --card: #18233A; --ink: #E8E6DF; --muted: #AEB8C8; --line: #2C3A55;
+  --navy: #E8E6DF; --accent: #F2A055; --code-bg: #0E1524; --shot-bg: #F7F5EF; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5;
+  padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+header { border-bottom: 3px solid var(--navy); padding-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
+h1 { font-size: 30px; font-weight: 700; color: var(--navy); margin: 0; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); max-width: 70ch; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin: 12px 0 0; font-weight: 700; }
+.step { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 14px; }
+.num { grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: var(--bg); font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.step h3 { margin: 0; font-size: 19px; color: var(--navy); text-wrap: balance; }
+.body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.body p { margin: 0; max-width: 72ch; }
+.shots { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+figure { margin: 0; background: var(--shot-bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px; max-width: 100%; }
+figure img { display: block; max-width: 100%; height: auto; }
+figure.bar img { width: 640px; }
+figure.panel img { width: 300px; }
+figure.dialog img { width: 440px; }
+.ui { font-weight: 600; color: var(--navy); }
+code { font-family: var(--font-mono); font-size: 14px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.rules { background: var(--card); border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: 10px; padding: 14px 18px; }
+.rules ul { margin: 6px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.card h3 { margin: 0; font-size: 17px; color: var(--navy); }
+.card p { margin: 0; }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 10px; }
+footer a { color: var(--accent); }
+@media print { :root { --bg: #FFFFFF; } .step, .card, .rules { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<p style="margin:0 auto 12px;max-width:1100px"><a href="./">← Course home</a></p>
+<div class="wrap">
+  <header>
+    <h1>GitHub Desktop Cheat Sheet</h1>
+    <p>One change, start to finish, with the buttons to press. Screenshots are from GitHub’s own guide; some were taken on a Mac, and the buttons are in the same places on Windows.</p>
+  </header>
+
+  <div class="rules">
+    <b>Three rules</b>
+    <ul>
+      <li>Look at <span class="ui">Current Branch</span> before you commit. It should be your branch, never <code>main</code>.</li>
+      <li>Fetch and pull before you start working.</li>
+      <li>Small commits with a real summary: “Limit the motor to 20%”, not “stuff”.</li>
+    </ul>
+  </div>
+
+  <h2>Once per laptop</h2>
+  <div class="step">
+    <div class="num">0</div>
+    <h3>Sign in and pick your editor</h3>
+    <div class="body">
+      <p><span class="ui">File › Options › Accounts</span>: sign in to GitHub. <span class="ui">File › Options › Integrations</span>: set <span class="ui">External editor</span> to the one you use (IntelliJ IDEA or VS Code). After that, <span class="ui">Repository › Open in…</span> opens the project in it.</p>
+    </div>
+  </div>
+
+  <h2>One change, start to finish</h2>
+
+  <div class="step">
+    <div class="num">1</div>
+    <h3>Clone the project (only the first time)</h3>
+    <div class="body">
+      <p>On the project’s GitHub page, click <span class="ui">Code › Open with GitHub Desktop</span>. In the window that opens, pick a <span class="ui">Local Path</span> you’ll find again, like <code>Documents\GitHub</code>, then <span class="ui">Clone</span>.</p>
+      <div class="shots">
+        <figure class="dialog"><img src="images/open-with-desktop.png" alt="The Code dropdown on a GitHub repository page, with Open with GitHub Desktop outlined"></figure>
+        <figure class="dialog"><img src="images/clone-choose-button-url-mac.png" alt="The Clone a Repository window, with the Choose button beside Local Path outlined"></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <h3>Get the latest</h3>
+    <div class="body">
+      <p>Switch to <code>main</code> (see step 3), click <span class="ui">Fetch origin</span>. If others pushed, the button turns into <span class="ui">Pull origin</span>: click it.</p>
+      <div class="shots">
+        <figure class="bar"><img src="images/fetch-button.png" alt="The bar across the top of GitHub Desktop, with Fetch origin outlined"></figure>
+        <figure class="bar"><img src="images/pull-button.png" alt="The same bar, with Pull origin outlined"></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <h3>Make a branch for your change</h3>
+    <div class="body">
+      <p>Click <span class="ui">Current Branch</span>, then <span class="ui">New Branch</span>. Name it for the change, like <code>lock-wheels</code>, and create it from <code>main</code>. The same list switches between branches.</p>
+      <div class="shots">
+        <figure class="bar"><img src="images/current-branch-menu.png" alt="The bar across the top, with the Current Branch button outlined"></figure>
+        <figure class="dialog"><img src="images/new-branch-button-mac.png" alt="The Current Branch list, with the New Branch button outlined"></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <h3>Change the code, then commit</h3>
+    <div class="body">
+      <p>Edit and test in your editor. Back in GitHub Desktop, the <span class="ui">Changes</span> tab lists every changed file; click one to see exactly what changed. Leave ticked the files you mean to commit. Type a <span class="ui">Summary</span>, then click <span class="ui">Commit to <i>your-branch</i></span>. (You can ignore the Copilot button.)</p>
+      <div class="shots">
+        <figure class="panel"><img src="images/commit-all.png" alt="The Changes tab, with the checkbox that ticks every changed file outlined"></figure>
+        <figure class="panel"><img src="images/create-commit-details.png" alt="The Changes tab, with the Summary field outlined above the blue Commit button"></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">5</div>
+    <h3>Send it to GitHub</h3>
+    <div class="body">
+      <p>A new branch shows <span class="ui">Publish branch</span>; after that the same spot shows <span class="ui">Push origin</span> whenever you have commits to send.</p>
+      <div class="shots">
+        <figure class="bar"><img src="images/publish-branch-button.png" alt="The bar across the top, with Publish branch outlined"></figure>
+        <figure class="bar"><img src="images/push-to-origin.png" alt="The bar across the top, with Push origin outlined"></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">6</div>
+    <h3>Open a pull request</h3>
+    <div class="body">
+      <p>Click <span class="ui">Preview Pull Request</span> (or <span class="ui">Branch › Create Pull Request</span>). Check the base is <code>main</code>, then create it. GitHub opens in your browser: write what you changed and why, and wait for review and the green check.</p>
+      <div class="shots">
+        <figure class="bar"><img src="images/windows-preview-pull-request.png" alt="The No local changes view, with the Preview Pull Request button outlined"></figure>
+        <figure class="dialog"><img src="images/base-branch-selection.png" alt="The Open a Pull Request window, with the base branch button outlined"></figure>
+      </div>
+    </div>
+  </div>
+
+  <h2>Fixes and extras</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>main moved on while you worked</h3>
+      <p><span class="ui">Current Branch › Choose a branch to merge into <i>your-branch</i></span>, pick <code>main</code>, merge, test, push.</p>
+      <figure class="panel"><img src="images/merge-branch-button-list.png" alt="The Current Branch list, with the Choose a branch to merge into button outlined at the bottom"></figure>
+    </div>
+    <div class="card">
+      <h3>Throw away changes you haven’t committed</h3>
+      <p>Right-click files in <span class="ui">Changes</span>, then <span class="ui">Discard Changes</span>. They’re gone for good, so be sure.</p>
+      <figure class="dialog"><img src="images/discard-changes-mac.png" alt="The Changes tab with two files selected and Discard 2 Selected Changes in the right-click menu"></figure>
+    </div>
+    <div class="card">
+      <h3>Undo a commit you already pushed</h3>
+      <p><span class="ui">History</span> tab, right-click the commit, <span class="ui">Revert Changes in Commit</span>. That makes a new commit that undoes it, then push.</p>
+    </div>
+    <div class="card">
+      <h3>Switching branches with unsaved work</h3>
+      <p>GitHub Desktop asks what to do with your changes: <span class="ui">Leave my changes</span> keeps them parked on this branch (a “stash”); <span class="ui">Bring my changes</span> takes them along.</p>
+    </div>
+    <div class="card">
+      <h3>“Conflict” when merging or pulling</h3>
+      <p>Two people changed the same lines. Open the file in your editor, keep the right version between the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> markers, delete the markers, then commit. Ask a mentor the first time.</p>
+    </div>
+    <div class="card">
+      <h3>Where’s my project on disk?</h3>
+      <p><span class="ui">Repository › Show in Explorer</span> opens the folder.</p>
+    </div>
+  </div>
+
+  <footer>Screenshots from <a href="https://docs.github.com/en/desktop">GitHub Docs</a>, © GitHub, Inc., licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; resized for this page.</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Robot Code Cheat Sheet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a one-page reference card; sections in a two-column grid that stacks on phones, commands in mono. */
+:root {
+  --bg: #F7F5EF;
+  --card: #FFFFFF;
+  --ink: #1F2733;
+  --muted: #4A5568;
+  --line: #D9D4C7;
+  --navy: #14213D;
+  --accent: #B4501A;
+  --code-bg: #EFEBE1;
+  --font-body: 'Rubik', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11192C; --card: #18233A; --ink: #E8E6DF; --muted: #AEB8C8; --line: #2C3A55;
+    --navy: #E8E6DF; --accent: #F2A055; --code-bg: #0E1524; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11192C; --card: #18233A; --ink: #E8E6DF; --muted: #AEB8C8; --line: #2C3A55;
+  --navy: #E8E6DF; --accent: #F2A055; --code-bg: #0E1524; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.45;
+  padding-block: 28px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; border-bottom: 3px solid var(--navy); padding-bottom: 10px; }
+h1 { font-size: 28px; font-weight: 700; color: var(--navy); margin: 0; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+section { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+section.wide { grid-column: 1 / -1; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin: 0 0 8px; font-weight: 700; }
+table { width: 100%; border-collapse: collapse; }
+td { padding: 5px 6px; border-top: 1px solid var(--line); vertical-align: top; }
+tr:first-child td { border-top: none; }
+td:first-child { width: 46%; }
+code, .mono { font-family: var(--font-mono); font-size: 13.5px; }
+td code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
+.scroll { overflow-x: auto; }
+kbd { font-family: var(--font-mono); font-size: 12.5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--code-bg); white-space: nowrap; }
+pre { margin: 0; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.5; background: var(--code-bg); border-radius: 6px; padding: 10px 12px; overflow-x: auto; }
+ol.loop { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; counter-reset: step; }
+ol.loop li { counter-increment: step; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+ol.loop li::before { content: counter(step); display: block; font-weight: 700; color: var(--accent); }
+@media (max-width: 760px) { ol.loop { grid-template-columns: 1fr 1fr; } }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }
+dt { font-weight: 700; color: var(--navy); }
+dd { margin: 0; color: var(--muted); }
+.note { color: var(--muted); font-size: 13.5px; margin: 8px 0 0; }
+@media print {
+  :root { --bg: #FFFFFF; --card: #FFFFFF; }
+  body { font-size: 12px; padding-block: 0; }
+  section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<p style="margin:0 auto 12px;max-width:1100px"><a href="./">← Course home</a></p>
+<div class="wrap">
+  <header>
+    <h1>Robot Code Cheat Sheet</h1>
+    <p>Windows commands. On a Mac or Linux, type <code>./gradlew</code> for <code>gradlew.bat</code>.</p>
+  </header>
+
+  <section class="wide">
+    <h2>One change, start to finish</h2>
+    <ol class="loop">
+      <li>Pull the latest</li>
+      <li>Make a branch</li>
+      <li>Change the code</li>
+      <li>Run it and test it</li>
+      <li>Commit, with a note</li>
+      <li>Push the branch</li>
+      <li>Pull request: review and CI</li>
+      <li>Merge into main</li>
+    </ol>
+  </section>
+
+  <div class="grid">
+    <section>
+      <h2>Gradle: build and run</h2>
+      <div class="scroll"><table>
+        <tr><td><code>gradlew.bat build</code></td><td>Compile and test everything</td></tr>
+        <tr><td><code>gradlew.bat test</code></td><td>Run only the tests</td></tr>
+        <tr><td><code>gradlew.bat run</code></td><td>Start it in the simulator</td></tr>
+        <tr><td><code>gradlew.bat run -PhwSim</code></td><td>Drive the real chassis from this laptop (CANivore on USB, chassis on blocks)</td></tr>
+        <tr><td><code>gradlew.bat deploy</code></td><td>Send it to the robot</td></tr>
+      </table></div>
+      <p class="note">Start the program through Gradle, never with an editor’s Run link beside <code>main</code>.</p>
+    </section>
+
+    <section>
+      <h2>Git: save and share</h2>
+      <div class="scroll"><table>
+        <tr><td><code>git clone &lt;link&gt;</code></td><td>Copy a project down, the first time</td></tr>
+        <tr><td><code>git pull</code></td><td>Bring others’ commits down</td></tr>
+        <tr><td><code>git switch -c my-change</code></td><td>Start a new branch</td></tr>
+        <tr><td><code>git status</code></td><td>What changed, what’s ready to commit</td></tr>
+        <tr><td><code>git add .</code></td><td>Include every change in the next commit</td></tr>
+        <tr><td><code>git commit -m "Limit the motor to 20%"</code></td><td>Save a commit with its note</td></tr>
+        <tr><td><code>git push</code></td><td>Send your commits up to GitHub</td></tr>
+      </table></div>
+      <p class="note">The first push of a new branch: <code>git push -u origin my-change</code>. Then open the pull request on GitHub.</p>
+    </section>
+
+    <section>
+      <h2>Where things are</h2>
+      <pre>first-robot/
+  build.gradle      the recipe: libraries, versions
+  gradlew.bat       runs Gradle
+  vendordeps/       motor and sensor libraries
+  src/main/java/frc/robot/
+    Main.java       where the program starts
+    Step1OneMotor.java
+  src/test/java/    the tests, in projects that have them
+  .git/             history (never edit by hand)</pre>
+    </section>
+
+    <section class="wide">
+      <h2>When something goes wrong</h2>
+      <div class="scroll"><table>
+        <tr><td>Red underline, build fails</td><td>Compile error. Read the <b>first</b> error: it names the file and line.</td></tr>
+        <tr><td><code>wpiutiljni could not be loaded</code></td><td>Started without Gradle. Use <code>gradlew.bat run</code>.</td></tr>
+        <tr><td><code>CANivore … not seen</code></td><td>Check the USB cable and that Phoenix Tuner X lists the CANivore.</td></tr>
+        <tr><td><code>CAN frame not received</code></td><td>Wrong CAN ID, or the device has no power. Compare the IDs with Tuner X.</td></tr>
+        <tr><td>Enabled, nothing moves</td><td>Factory-default the devices in Tuner X, and check their firmware.</td></tr>
+        <tr><td>Push rejected</td><td>Someone pushed first: <code>git pull</code>, then push again.</td></tr>
+      </table></div>
+    </section>
+
+    <section>
+      <h2>Words</h2>
+      <dl>
+        <dt>Compile</dt><dd>Translate your .java text into bytecode the computer runs</dd>
+        <dt>Library</dt><dd>Code someone else wrote that yours uses (WPILib, Phoenix)</dd>
+        <dt>Gradle</dt><dd>The build tool: downloads, compiles, tests, runs, deploys</dd>
+        <dt>Commit</dt><dd>A save point of the whole project, with a note</dd>
+        <dt>Branch</dt><dd>Your own line of commits; <b>main</b> always works</dd>
+        <dt>Pull request</dt><dd>“Please merge my branch”, reviewed by the team</dd>
+        <dt>CI</dt><dd>GitHub builds and tests every change on a clean computer</dd>
+        <dt>Deploy</dt><dd>Send the program onto the robot</dd>
+      </dl>
+    </section>
+  </div>
+</div>
+</body>
+</html>

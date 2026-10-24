@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Software Gets Made</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* A 1920x1080 slide scaled to fit the window. Keys: arrows, space, Page Up/Down, Home/End;
+   N shows the speaker notes, F goes full screen. Clicking the right or left half moves on or back. */
+html, body { margin: 0; height: 100%; background: #0B1222; overflow: hidden; }
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: center center; }
+#stage > .slide { position: absolute; inset: 0; display: none; }
+#stage > .slide.current { display: block; }
+#stage section { position: relative; width: 1920px; height: 1080px; box-sizing: border-box; overflow: hidden; }
+section h1, section h2, section h3, section p, section ul, section ol, section table { margin: 0; }
+section ul, section ol { padding-left: 48px; }
+section table { border-collapse: collapse; width: 100%; }
+section th, section td { padding: 0.35em 0.6em; text-align: left; }
+section aside { display: none; }
+x-shape { display: block; flex: none; }
+x-shape[kind="arrow-right"] { clip-path: polygon(0 30%, 60% 30%, 60% 0, 100% 50%, 60% 100%, 60% 70%, 0 70%); }
+x-icon { display: inline-block; flex: none; }
+x-icon svg { width: 100%; height: 100%; display: block; }
+#notes { position: fixed; left: 0; right: 0; bottom: 0; max-height: 40%; overflow: auto; background: rgba(11, 18, 34, 0.94); color: #E8E6DF; font: 20px/1.5 'Rubik', Arial, sans-serif; padding: 16px 24px 48px; display: none; border-top: 2px solid #F28C28; }
+#notes.on { display: block; }
+#bar { position: fixed; right: 16px; bottom: 12px; color: #8A93A6; font: 14px 'Rubik', Arial, sans-serif; user-select: none; }
+#bar a { color: #8A93A6; }
+</style>
+</head>
+<body>
+<div id="stage">
+<div class="slide">
+<section id="cover" data-transition="fade" style="background:#14213D;color:#F7F5EF;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#F28C28;letter-spacing:2px">$ gradlew run</p>
+<h1 style="font-size:120px;font-weight:700;line-height:1.05;color:#F7F5EF">How software<br>gets made</h1>
+<p style="font-size:44px;color:#BFC8D6;line-height:1.3">A crash course in the basics every developer uses, on the robot and at any job</p>
+<aside>Quick tour, no memorizing. The goal is that every word on these slides means something to you when you hear it again: compile, Gradle, commit, branch, pull request, CI. There's a one-page cheat sheet to keep.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="pipeline" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:72px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">The big picture</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Every program takes the same trip</h2>
+</div>
+<div style="display:flex;align-items:center;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Write</h3>
+<p style="font-size:28px;color:#4A5568">You type Java into files</p>
+</div>
+<x-shape kind="arrow-right" style="width:56px;height:28px;background:#F28C28"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Build</h3>
+<p style="font-size:28px;color:#4A5568">Turned into something the computer runs</p>
+</div>
+<x-shape kind="arrow-right" style="width:56px;height:28px;background:#F28C28"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Test</h3>
+<p style="font-size:28px;color:#4A5568">Code checks that it still works</p>
+</div>
+<x-shape kind="arrow-right" style="width:56px;height:28px;background:#F28C28"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Run</h3>
+<p style="font-size:28px;color:#4A5568">In the simulator, or on the robot</p>
+</div>
+<x-shape kind="arrow-right" style="width:56px;height:28px;background:#F28C28"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Share</h3>
+<p style="font-size:28px;color:#4A5568">Saved and sent to the team</p>
+</div>
+</div>
+<p style="font-size:32px;color:#4A5568">Each part has a tool. Today is a quick tour of those tools, not a class on any one of them.</p>
+<aside>This is the map for the whole talk. Everything after this is one of these five boxes. Professional developers do exactly these five things all day, just faster and with more automation.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="folders" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Files and folders</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">A project is just a folder</h2>
+</div>
+<div style="display:flex;gap:64px;align-items:start">
+<div style="flex:1;background:#14213D;border-radius:20px;padding:40px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#F7F5EF;line-height:1.5">first-robot/<br>&#160;&#160;build.gradle<br>&#160;&#160;gradlew.bat<br>&#160;&#160;vendordeps/<br>&#160;&#160;src/main/java/frc/robot/<br>&#160;&#160;&#160;&#160;Main.java<br>&#160;&#160;&#160;&#160;Step1OneMotor.java<br>&#160;&#160;.git/</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4"><b>Folders hold files</b>, and folders inside folders. The path is the list of folders you go through to reach a file.</p>
+<p style="font-size:32px;line-height:1.4"><b>Your code</b> lives in <span style="color:#B4501A">src/main/java</span>. The package <span style="color:#B4501A">frc.robot</span> is just the folders <span style="color:#B4501A">frc/robot</span>.</p>
+<p style="font-size:32px;line-height:1.4"><b>The rest</b> tells the tools how to build it. You rarely touch it.</p>
+</div>
+</div>
+<aside>Show this in the IDE's project view and in Windows Explorer side by side: it's the same folder. The .git folder is where version control keeps the history; it's hidden on purpose and you never edit it by hand.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="source" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Source code</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Code is text written for people</h2>
+</div>
+<div style="background:#14213D;border-radius:20px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;color:#F7F5EF;line-height:1.5"><span style="color:#8FB3FF">double</span> power = stick * 0.2; <span style="color:#9AA5B8">// 20% at most</span><br>driveMotor.setControl(<span style="color:#8FB3FF">new</span> DutyCycleOut(power));</p>
+</div>
+<div style="display:flex;gap:48px">
+<p style="flex:1;font-size:32px;line-height:1.4">A <b>.java</b> file is plain text. You could open it in Notepad.</p>
+<p style="flex:1;font-size:32px;line-height:1.4">The computer can’t run text. It runs instructions in a form only it reads.</p>
+<p style="flex:1;font-size:32px;line-height:1.4">So something has to <b>translate</b> one into the other. That’s next.</p>
+</div>
+<aside>The lines on screen are from Step 1 of the first-robot project: take the stick, scale it to 20%, send it to the motor. The text after // is a comment: the computer ignores it, it's there for the next person reading.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="compile" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Compiling vs running</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Two steps: translate, then run</h2>
+</div>
+<div style="display:flex;align-items:center;gap:24px">
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;font-weight:700;color:#14213D">Main.java</p>
+<p style="font-size:28px;color:#4A5568">The text you wrote</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#B4501A;font-weight:700">compile</p>
+<x-shape kind="arrow-right" style="width:96px;height:40px;background:#F28C28"></x-shape>
+</div>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:32px;font-weight:700;color:#14213D">Main.class</p>
+<p style="font-size:28px;color:#4A5568">Bytecode: instructions for Java</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#B4501A;font-weight:700">run</p>
+<x-shape kind="arrow-right" style="width:96px;height:40px;background:#F28C28"></x-shape>
+</div>
+<div style="flex:1;background:#14213D;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:32px;font-weight:700;color:#F7F5EF">The program</p>
+<p style="font-size:28px;color:#BFC8D6">Java runs it, and the motor spins</p>
+</div>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;background:#FFFFFF;border-left:8px solid #F28C28;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:32px;font-weight:700;color:#14213D">Compile error</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">The translation fails: a typo, a missing semicolon. Red underline in the editor. Nothing runs until it’s fixed.</p>
+</div>
+<div style="flex:1;background:#FFFFFF;border-left:8px solid #3A6EA5;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:32px;font-weight:700;color:#14213D">Runtime error</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">It translates fine, then goes wrong while running: a crash, or the robot does the wrong thing.</p>
+</div>
+</div>
+<aside>Compile errors are the friendly kind: the compiler tells you the file and the line, and nothing bad happens. Runtime errors are the ones that cost you: the code was valid Java but wrong. That's why we have tests and the simulator. Java is compiled to bytecode, then the Java virtual machine runs that; that's why one .class file runs on Windows, Linux, or the robot.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="libraries" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Libraries</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Nobody writes it all themselves</h2>
+</div>
+<p style="font-size:32px;color:#4A5568;line-height:1.4">A library is code someone else wrote, packaged so your program can use it. A robot program is mostly libraries, with a little of yours on top.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">WPILib</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">FIRST’s library: the robot loop, gamepads, the simulator, field math.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Vendor libraries</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">From the companies that make the parts: CTRE’s Phoenix for our motors and sensors. Listed in <span style="color:#B4501A">vendordeps/</span>.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Our runtime</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">The swerve drive, the simulator world and Pitwall, so team code describes the robot.</p>
+</div>
+</div>
+<aside>You don't download these by hand. You write down which ones and which version, and the build tool fetches them. That's the next slide. Versions matter: everyone on the team must build against the same versions, or "works on my laptop" happens.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="gradle" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Gradle</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">The build tool does the chores</h2>
+</div>
+<div style="display:flex;gap:64px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:32px;line-height:1.4">You say <b>what</b> you want. Gradle works out <b>how</b>:</p>
+<ul style="font-size:32px;line-height:1.5;color:#1F2733">
+<li>download the right Java and every library</li>
+<li>compile your code</li>
+<li>run the tests</li>
+<li>start the program, or send it to the robot</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#14213D;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#F7F5EF">build.gradle</p>
+<p style="font-size:28px;color:#BFC8D6;line-height:1.4">The recipe: which libraries, which versions, which Java.</p>
+</div>
+<div style="background:#14213D;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#F7F5EF">gradlew.bat</p>
+<p style="font-size:28px;color:#BFC8D6;line-height:1.4">The wrapper: it fetches the right Gradle itself, so nobody installs it.</p>
+</div>
+</div>
+</div>
+<aside>The buttons in the IDE and WPILib's commands are all just Gradle underneath. If a button breaks, the same thing works from a terminal. On Windows it's gradlew.bat; on Mac and Linux it's ./gradlew. The first build downloads a lot, so it's slow once.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="gradle-commands" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Gradle</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Five commands cover almost everything</h2>
+</div>
+<table style="font-family:'Rubik', Arial, sans-serif;font-size:32px;color:#1F2733">
+<tr style="background:#14213D"><th style="width:45%;color:#F7F5EF;text-align:left">Command</th><th style="width:55%;color:#F7F5EF;text-align:left">What it does</th></tr>
+<tr style="background:#FFFFFF"><td style="font-family:'JetBrains Mono', 'Courier New', monospace">gradlew build</td><td>Compile and test everything</td></tr>
+<tr><td style="font-family:'JetBrains Mono', 'Courier New', monospace">gradlew test</td><td>Run only the tests</td></tr>
+<tr style="background:#FFFFFF"><td style="font-family:'JetBrains Mono', 'Courier New', monospace">gradlew run</td><td>Start the program in the simulator</td></tr>
+<tr><td style="font-family:'JetBrains Mono', 'Courier New', monospace">gradlew run -PhwSim</td><td>Drive the real chassis from this laptop</td></tr>
+<tr style="background:#FFFFFF"><td style="font-family:'JetBrains Mono', 'Courier New', monospace">gradlew deploy</td><td>Send the program to the robot</td></tr>
+</table>
+<p style="font-size:28px;color:#4A5568">On Windows: <span style="color:#B4501A">gradlew.bat</span>. In the IDE, the run buttons do the same thing for you.</p>
+<aside>-PhwSim is the bench trick: the laptop runs the robot program, and the CANivore plugged into USB carries its commands to the real motors. No robot computer, no radio. Deploy comes later, once the Systemcore arrives.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="ide" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">The editor</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">An editor that knows your project</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:36px;font-weight:700;color:#14213D">It finishes your typing</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Type <span style="color:#B4501A">driveMotor.</span> and it lists everything a motor can do.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:36px;font-weight:700;color:#14213D">It catches mistakes</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Compile errors show as you type, before you build.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:36px;font-weight:700;color:#14213D">It takes you there</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Ctrl+click any name to jump to where it’s defined, even inside a library.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:36px;font-weight:700;color:#14213D">It runs and debugs</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Run, or Debug to pause on a line and look at every value.</p>
+</div>
+</div>
+<div style="display:flex;gap:32px">
+<p style="flex:1;font-size:28px;color:#1F2733;line-height:1.4"><b>IntelliJ IDEA</b>: built for Java and Gradle. What most Java companies use.</p>
+<p style="flex:1;font-size:28px;color:#1F2733;line-height:1.4"><b>VS Code</b> with WPILib’s extension: what FIRST’s docs show.</p>
+</div>
+<aside>Both work: our projects come set up for either one. IntelliJ understands Java and Gradle out of the box. VS Code needs Microsoft's Java extensions plus WPILib's, and one restart after installing them. In either one, run the program through the project's run tasks or buttons, not the Run link next to main: that skips WPILib's native libraries.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="why-git" data-transition="fade" style="background:#14213D;color:#F7F5EF;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:24px;color:#F28C28;font-weight:700;text-transform:uppercase;letter-spacing:3px">Version control</p>
+<h2 style="font-size:96px;font-weight:700;color:#F7F5EF;line-height:1.1">What did we change, who changed it, and how do we undo it?</h2>
+<p style="font-size:36px;color:#BFC8D6;line-height:1.4">Git answers all three. Every professional software team uses it.</p>
+<aside>Picture the night before competition: the robot drove fine yesterday, today it doesn't, and four people edited the code. Without version control you're guessing. With it, you see exactly which lines changed, by whom, and you can go back to yesterday's version in one command.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="commits" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Commits</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">A commit is a save point with a note</h2>
+</div>
+<div style="display:flex;align-items:center;gap:24px">
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B4501A">Mon · Sam</p>
+<p style="font-size:28px;color:#14213D;font-weight:500">One motor spins from the stick</p>
+</div>
+<x-shape kind="arrow-right" style="width:56px;height:28px;background:#F28C28"></x-shape>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B4501A">Wed · Ana</p>
+<p style="font-size:28px;color:#14213D;font-weight:500">Limit the motor to 20%</p>
+</div>
+<x-shape kind="arrow-right" style="width:56px;height:28px;background:#F28C28"></x-shape>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B4501A">Sat · Sam</p>
+<p style="font-size:28px;color:#14213D;font-weight:500">Button A points the wheel ahead</p>
+</div>
+</div>
+<div style="display:flex;gap:48px">
+<p style="flex:1;font-size:32px;line-height:1.4">Each commit records <b>the whole project</b> as it was, <b>who</b> made it, <b>when</b>, and <b>why</b>.</p>
+<p style="flex:1;font-size:32px;line-height:1.4">Commit small and often. A good note says what changed: “Limit the motor to 20%”, not “stuff”.</p>
+</div>
+<aside>The names are made up. The point: history is a list of small, described steps. If Wednesday's change broke something, you can see exactly what it changed and undo just that. In the IDE, the Commit window shows what changed, you type the note, click Commit.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="github" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">GitHub</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">One shared copy everyone syncs with</h2>
+</div>
+<div style="display:flex;align-items:center;gap:32px">
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;align-items:center;gap:12px">
+<x-icon name="Code" style="width:72px;height:72px;color:#3A6EA5"></x-icon>
+<h3 style="font-size:36px;font-weight:700;color:#14213D">Your laptop</h3>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+<p style="font-size:28px;color:#B4501A;font-weight:700">push →</p>
+<p style="font-size:28px;color:#3A6EA5;font-weight:700">← pull</p>
+</div>
+<div style="flex:1;background:#14213D;border-radius:20px;padding:36px;display:flex;flex-direction:column;align-items:center;gap:12px">
+<x-icon name="Cloud" style="width:72px;height:72px;color:#F28C28"></x-icon>
+<h3 style="font-size:36px;font-weight:700;color:#F7F5EF">GitHub</h3>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+<p style="font-size:28px;color:#3A6EA5;font-weight:700">pull →</p>
+<p style="font-size:28px;color:#B4501A;font-weight:700">← push</p>
+</div>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;align-items:center;gap:12px">
+<x-icon name="Users" style="width:72px;height:72px;color:#3A6EA5"></x-icon>
+<h3 style="font-size:36px;font-weight:700;color:#14213D">A teammate’s</h3>
+</div>
+</div>
+<div style="display:flex;gap:40px">
+<p style="flex:1;font-size:32px;line-height:1.4"><b>clone</b>: copy it down the first time</p>
+<p style="flex:1;font-size:32px;line-height:1.4"><b>push</b>: send your commits up</p>
+<p style="flex:1;font-size:32px;line-height:1.4"><b>pull</b>: bring others’ commits down</p>
+</div>
+<aside>Git is the tool; GitHub is a website that hosts the shared copy. Commits live on your laptop until you push. Pull before you start work, push when you've committed something that works.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="branches" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Branches</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Try things without breaking the robot</h2>
+</div>
+<div style="position:relative;width:1664px;height:300px">
+<svg aria-label="The main branch runs straight across; a branch named lock-wheels splits off, gets two commits, and joins main again" width="1664" height="300" viewBox="0 0 1664 300" style="position:absolute;left:0;top:0;width:1664px;height:300px">
+<line x1="40" y1="80" x2="1620" y2="80" stroke="#14213D" stroke-width="10" stroke-linecap="round"/>
+<path d="M 360 80 C 460 80 460 230 560 230 L 1040 230 C 1140 230 1140 80 1240 80" fill="none" stroke="#F28C28" stroke-width="10" stroke-linecap="round"/>
+<circle cx="160" cy="80" r="26" fill="#14213D"/>
+<circle cx="360" cy="80" r="26" fill="#14213D"/>
+<circle cx="700" cy="230" r="26" fill="#F28C28"/>
+<circle cx="900" cy="230" r="26" fill="#F28C28"/>
+<circle cx="1240" cy="80" r="26" fill="#14213D"/>
+<circle cx="1480" cy="80" r="26" fill="#14213D"/>
+</svg>
+<p style="position:absolute;left:40px;top:0px;width:400px;font-size:28px;font-weight:700;color:#14213D">main: always works</p>
+<p style="position:absolute;left:600px;top:262px;width:560px;font-size:28px;font-weight:700;color:#B4501A">lock-wheels: your experiment</p>
+<p style="position:absolute;left:1140px;top:0px;width:300px;font-size:28px;font-weight:700;color:#14213D">merged</p>
+</div>
+<div style="display:flex;gap:48px">
+<p style="flex:1;font-size:32px;line-height:1.4">A <b>branch</b> is your own line of commits. <b>main</b> keeps working while you try something.</p>
+<p style="flex:1;font-size:32px;line-height:1.4">When it works, it’s <b>merged</b> back into main. If it doesn’t, throw the branch away.</p>
+</div>
+<aside>This is how two people work on the robot at once without stepping on each other: each on their own branch. Rule for the team: never commit straight to main; main is what goes on the robot.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="pull-requests" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Pull requests</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Ask before your branch joins main</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:28px">
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:44px;font-weight:700;color:#F28C28">1</p>
+<h3 style="font-size:32px;font-weight:700;color:#14213D">Push your branch</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Your commits go up to GitHub.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:44px;font-weight:700;color:#F28C28">2</p>
+<h3 style="font-size:32px;font-weight:700;color:#14213D">Open a pull request</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">“Please merge this into main”, with what and why.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:44px;font-weight:700;color:#F28C28">3</p>
+<h3 style="font-size:32px;font-weight:700;color:#14213D">Review</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Teammates read the changes, comment, ask questions. Checks run.</p>
+</div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:44px;font-weight:700;color:#F28C28">4</p>
+<h3 style="font-size:32px;font-weight:700;color:#14213D">Merge</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Approved and green: it joins main.</p>
+</div>
+</div>
+<p style="font-size:32px;color:#4A5568;line-height:1.4">A second pair of eyes catches what you can’t see in your own code. Every company works this way.</p>
+<aside>Review is a conversation, not a grade. Reading other people's pull requests is one of the fastest ways to learn. The team has agreed to automated AI reviews on pull requests too; they leave comments like a reviewer would, and a person still decides.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="testing" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Testing</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Code that checks your code</h2>
+</div>
+<div style="display:flex;gap:64px;align-items:start">
+<div style="flex:3;background:#14213D;border-radius:20px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#F7F5EF;line-height:1.5"><span style="color:#F28C28">@Test</span><br><span style="color:#8FB3FF">void</span> fullStickIsTwentyPercent() {<br>&#160;&#160;gamepad.setLeftY(-1.0);<br>&#160;&#160;robot.teleopPeriodic();<br>&#160;&#160;assertThat(motorOutput())<br>&#160;&#160;&#160;&#160;.isEqualTo(0.2);<br>}</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4"><b>Set it up</b>, <b>do it</b>, <b>check the result</b>. Every test has those three parts.</p>
+<p style="font-size:32px;line-height:1.4">Thousands of tests run in seconds, with no robot. Break something and a test says exactly what.</p>
+</div>
+</div>
+<aside>The example is simplified, but it's the real idea: pretend the stick is pushed all the way, run one loop of the robot program, and check the motor was told 20%. If someone later changes the 0.2 by accident, this test fails before it ever reaches the robot.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="ci" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">CI/CD and GitHub Actions</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">A robot checks every change for you</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:36px;font-weight:700;color:#14213D">CI: continuous integration</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Every push and pull request, a fresh computer in the cloud builds the code and runs every test.</p>
+</div>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:36px;font-weight:700;color:#14213D">GitHub Actions</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">GitHub’s service that runs those checks. A small file in the project says what to run.</p>
+</div>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:36px;font-weight:700;color:#14213D">CD: continuous delivery</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Shipping passing code automatically. For a robot, we still deploy by hand.</p>
+</div>
+</div>
+<div style="display:flex;gap:32px;align-items:center">
+<x-icon name="CheckCircle" style="width:64px;height:64px;color:#2E7D4F"></x-icon>
+<p style="flex:1;font-size:32px;line-height:1.4"><b>Green check</b>: it builds and every test passes on a clean machine.</p>
+<x-icon name="Warning" style="width:64px;height:64px;color:#B4501A"></x-icon>
+<p style="flex:1;font-size:32px;line-height:1.4"><b>Red X</b>: something broke. Fix it before merging.</p>
+</div>
+<aside>The point of the clean machine: it proves the code works from a fresh copy, not just on the laptop where you've been fiddling. "Works on my machine" stops being an excuse. Rule: nothing merges into main with a red X.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="releases" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Releases</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Lock down exactly what goes on the robot</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:44px;font-weight:700;color:#F28C28">1</p>
+<h3 style="font-size:36px;font-weight:700;color:#14213D">Tag a commit</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Give one exact commit on main a version name, like <span style="color:#B4501A">week1-v3</span>.</p>
+</div>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:44px;font-weight:700;color:#F28C28">2</p>
+<h3 style="font-size:36px;font-weight:700;color:#14213D">Build it once</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">CI builds and tests that tag on a clean machine. Same tag, same program, every time.</p>
+</div>
+<div style="flex:1;background:#14213D;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:44px;font-weight:700;color:#F28C28">3</p>
+<h3 style="font-size:36px;font-weight:700;color:#F7F5EF">Deploy the release</h3>
+<p style="font-size:28px;color:#BFC8D6;line-height:1.4">At an event, only releases go on the robot. New work waits for the next one.</p>
+</div>
+</div>
+<div style="display:flex;gap:48px">
+<p style="flex:1;font-size:32px;line-height:1.4">Something breaks? Put the <b>last good release</b> back on in minutes.</p>
+<p style="flex:1;font-size:32px;line-height:1.4">Every library we use is a release too: <span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#B4501A">WPILib 2027.0.0-alpha-7</span>.</p>
+</div>
+<aside>Between matches is the worst time to discover someone's half-finished change is on the robot. A release fixes that: everyone knows exactly which code is running, the log says which version, and going back is one deploy. The same idea is why the libraries have version numbers: the build asks for an exact version, so it builds the same on every laptop, today and next year.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="the-loop" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Putting it together</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">One change, start to finish</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px">
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">1</p><p style="font-size:32px;font-weight:500;color:#14213D">Pull the latest</p></div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">2</p><p style="font-size:32px;font-weight:500;color:#14213D">Make a branch</p></div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">3</p><p style="font-size:32px;font-weight:500;color:#14213D">Change the code</p></div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">4</p><p style="font-size:32px;font-weight:500;color:#14213D">Run it and test it</p></div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">5</p><p style="font-size:32px;font-weight:500;color:#14213D">Commit, with a note</p></div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">6</p><p style="font-size:32px;font-weight:500;color:#14213D">Push the branch</p></div>
+<div style="background:#FFFFFF;border:2px solid #D9D4C7;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">7</p><p style="font-size:32px;font-weight:500;color:#14213D">Pull request: review and CI</p></div>
+<div style="background:#14213D;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px"><p style="font-size:28px;font-weight:700;color:#F28C28">8</p><p style="font-size:32px;font-weight:500;color:#F7F5EF">Merge into main</p></div>
+</div>
+<p style="font-size:32px;color:#4A5568;line-height:1.4">Steps 3 and 4 repeat many times. The rest happens once per change.</p>
+<aside>This is the same loop at any software company, every day. Small changes go round it in an hour. If a step feels like ceremony now, it pays for itself the first time something breaks two days before competition.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="three-ways" data-transition="fade" style="background:#F7F5EF;color:#1F2733;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;color:#B4501A;font-weight:700;text-transform:uppercase;letter-spacing:3px">Where it runs</p>
+<h2 style="font-size:72px;font-weight:700;color:#14213D;line-height:1.1">Three places to run the same program</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:16px">
+<x-icon name="Play" style="width:56px;height:56px;color:#3A6EA5"></x-icon>
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Simulator</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">Any laptop, no hardware. Pretend motors and a pretend field.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B4501A">gradlew run</p>
+</div>
+<div style="flex:1;background:#FFFFFF;border:2px solid #D9D4C7;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:16px">
+<x-icon name="Wrench" style="width:56px;height:56px;color:#3A6EA5"></x-icon>
+<h3 style="font-size:44px;font-weight:700;color:#14213D">Bench</h3>
+<p style="font-size:28px;color:#4A5568;line-height:1.4">The laptop drives real motors through the CANivore. Chassis on blocks.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B4501A">gradlew run -PhwSim</p>
+</div>
+<div style="flex:1;background:#14213D;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:16px">
+<x-icon name="Lightning" style="width:56px;height:56px;color:#F28C28"></x-icon>
+<h3 style="font-size:44px;font-weight:700;color:#F7F5EF">Robot</h3>
+<p style="font-size:28px;color:#BFC8D6;line-height:1.4">The program goes onto the robot’s own computer. Driven from the Driver Station.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F28C28">gradlew deploy</p>
+</div>
+</div>
+<aside>Same code in all three. The simulator is where most work happens; the bench is where we prove it on real motors; the robot is last. The robot's computer, the Systemcore, arrives in late November, so for now it's the first two.</aside>
+</section>
+</div>
+<div class="slide">
+<section id="end" data-transition="fade" style="background:#14213D;color:#F7F5EF;font-family:'Rubik', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<h2 style="font-size:96px;font-weight:700;color:#F7F5EF;line-height:1.1">Change one thing.<br>Run it.<br><span style="color:#F28C28">See what happened.</span></h2>
+<p style="font-size:36px;color:#BFC8D6;line-height:1.4">That’s the whole job, repeated. The cheat sheet has every command from today.</p>
+<aside>Hand out the cheat sheet. Next: open the first-robot project, Step 1, and make a wheel spin.</aside>
+</section>
+</div>
+</div>
+<div id="notes"></div>
+<div id="bar"><span id="count"></span> · N notes · F full screen · <a href="./">course home</a></div>
+<script>
+// Simple line icons for the few the slides use, drawn in the icon's own color.
+const ICONS = {
+  Code: '<path d="M8 6 2 12l6 6M16 6l6 6-6 6M14 4l-4 16"/>',
+  Cloud: '<path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/>',
+  Users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14a5 5 0 0 1 5 6"/>',
+  Play: '<path d="M7 4.5v15l12-7.5z"/>',
+  Wrench: '<path d="M14.5 6.5a4 4 0 0 0 5.2 5.2L12 19.4a2 2 0 0 1-2.8-2.8l7.7-7.7a4 4 0 0 0-2.4-2.4zM15 3.5a4 4 0 0 1 5.5 5.5"/>',
+  Lightning: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  CheckCircle: '<circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.5 3 3 6-6.5"/>',
+  Warning: '<path d="M12 3 1.5 21h21z"/><path d="M12 10v5M12 18h.01"/>'
+};
+for (const el of document.querySelectorAll('x-icon')) {
+  const path = ICONS[el.getAttribute('name')] || '';
+  el.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + path + '</svg>';
+}
+
+const slides = [...document.querySelectorAll('#stage > .slide')];
+const stage = document.getElementById('stage');
+const notes = document.getElementById('notes');
+const count = document.getElementById('count');
+let current = 0;
+
+function fit() {
+  const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  stage.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+}
+
+function show(i) {
+  current = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, n) => s.classList.toggle('current', n === current));
+  const aside = slides[current].querySelector('aside');
+  notes.textContent = aside ? aside.textContent : '(No notes for this slide.)';
+  count.textContent = (current + 1) + ' / ' + slides.length;
+  history.replaceState(null, '', '#' + (current + 1));
+}
+
+document.addEventListener('keydown', (e) => {
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { show(current + 1); e.preventDefault(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { show(current - 1); e.preventDefault(); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+  else if (e.key === 'n' || e.key === 'N') notes.classList.toggle('on');
+  else if (e.key === 'f' || e.key === 'F') {
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {});
+  }
+});
+document.addEventListener('click', (e) => {
+  if (e.target.closest('a, #notes')) return;
+  show(e.clientX > window.innerWidth / 2 ? current + 1 : current - 1);
+});
+window.addEventListener('resize', fit);
+
+fit();
+show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
