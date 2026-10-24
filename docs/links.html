@@ -27,15 +27,35 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: 
 code { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 14px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
 a { color: var(--accent); }
 .note { color: var(--muted); font-size: 14px; margin: 0; }
+.scroll { overflow-x: auto; }
+table.versions { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-size: 15px; }
+table.versions th, table.versions td { text-align: left; padding: 8px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+table.versions tr:first-child th { border-top: none; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+table.versions td:nth-child(2) { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 14px; white-space: nowrap; }
 </style>
 </head>
 <body>
 <main>
-  <p style="margin:0"><a href="./">← Course home</a></p>
+  <p style="margin:0"><a href="./">← Course home</a> · <a href="https://github.com/mikegrundvig/2611-first-bot">The code on GitHub</a></p>
   <header>
     <h1>Installs and links</h1>
     <p>Everything is free. Windows is what the team's laptops run; most of it works on a Mac too.</p>
   </header>
+
+  <h2>Versions we use</h2>
+  <div class="scroll">
+  <table class="versions">
+    <tr><th>What</th><th>Version</th><th>Where it's set</th></tr>
+    <tr><td>WPILib</td><td>2027.0.0-alpha-7</td><td>build.gradle (GradleRIO)</td></tr>
+    <tr><td>Phoenix 6 library</td><td>26.70.0-alpha-2</td><td>vendordeps/</td></tr>
+    <tr><td>Firmware on every CTRE device</td><td>26.70.x</td><td>Flashed with Tuner X Preview; must match the library</td></tr>
+    <tr><td>Phoenix Tuner X Preview</td><td>2026.10.x</td><td>Microsoft Store</td></tr>
+    <tr><td>Java</td><td>25</td><td>Installed on the laptop (Eclipse Temurin)</td></tr>
+    <tr><td>Gradle</td><td>9.8.1</td><td>Downloaded by gradlew.bat; nothing to install</td></tr>
+    <tr><td>AdvantageScope</td><td>v27.0.0-alpha-6</td><td>Installed on the bench laptop</td></tr>
+  </table>
+  </div>
+  <p class="note">If the firmware and the library don't match, the devices report a firmware error, or just don't respond, when the program starts.</p>
 
   <h2>Every student laptop</h2>
   <div class="list">
@@ -70,7 +90,7 @@ a { color: var(--accent); }
   <div class="list">
     <div class="item">
       <div><a class="name" href="https://apps.microsoft.com/detail/9n17ns6nm06v">Phoenix Tuner X Preview</a><span class="tag must">Needed</span></div>
-      <p class="why">CTRE's tool for the motors, CANcoders, Pigeon and the CANivore: firmware, CAN IDs, factory defaults, live plots. The <b>Preview</b> is the version for the 2027 firmware (26.70.x); it installs next to the regular Tuner X.</p>
+      <p class="why">CTRE's tool for the motors, CANcoders, Pigeon and the CANivore: firmware, CAN IDs, factory defaults, live plots. Use the <b>Preview</b>, version 2026.10.x: it's the one that offers the 26.70.x firmware our code needs. It installs next to the regular Tuner X, which can't.</p>
     </div>
     <div class="item">
       <div><a class="name" href="https://github.com/Mechanical-Advantage/AdvantageScope/releases/tag/v27.0.0-alpha-6">AdvantageScope 2027 alpha</a><span class="tag">Useful</span></div>

@@ -37,7 +37,7 @@ How to take beginners from "never cloned a repo" to driving the swerve chassis w
 ### The chassis
 - [ ] On blocks, wheels clear of everything. Battery charged.
 - [ ] CANivore on the bench laptop's USB; Tuner X lists it. Note its name (code assumes `canivore`).
-- [ ] Every device on Phoenix **26.70.x** firmware, then **factory default** each one (clears last season's settings and the FRC lock).
+- [ ] Every device on Phoenix **26.70.x** firmware, flashed with Phoenix Tuner X **Preview 2026.10.x** (the regular Tuner X doesn't offer it), to match the code's Phoenix 6 library **26.70.0-alpha-2**. Then **factory default** each one (clears last season's settings and the FRC lock).
 - [ ] In Tuner X, read the IDs and compare with the top of `Step1OneMotor.java` and `ChassisRobot.java`: drive 23, steer 24, CANcoder 12 (front left), Pigeon 1. Fix the code if different.
 - [ ] **Run Step 1 yourself first.** `gradlew.bat run -PhwSim`, drag the gamepad onto Joystick 0, click Teleoperated, push the stick: the front-left wheel spins at 20%. If it doesn't, fix it now, not in front of the room.
 - [ ] Run Step 2 and turn the front-left wheel by hand: the printed angle should change, and read near 0 pointing straight ahead.

@@ -71,7 +71,7 @@ dd { margin: 0; color: var(--muted); }
 </style>
 </head>
 <body>
-<p style="margin:0 auto 12px;max-width:1100px"><a href="./">← Course home</a></p>
+<p style="margin:0 auto 12px;max-width:1100px"><a href="./">← Course home</a> · <a href="https://github.com/mikegrundvig/2611-first-bot">The code on GitHub</a></p>
 <div class="wrap">
   <header>
     <h1>Robot Code Cheat Sheet</h1>
@@ -140,7 +140,7 @@ dd { margin: 0; color: var(--muted); }
         <tr><td><code>wpiutiljni could not be loaded</code></td><td>Started without Gradle. Use <code>gradlew.bat run</code>.</td></tr>
         <tr><td><code>CANivore … not seen</code></td><td>Check the USB cable and that Phoenix Tuner X lists the CANivore.</td></tr>
         <tr><td><code>CAN frame not received</code></td><td>Wrong CAN ID, or the device has no power. Compare the IDs with Tuner X.</td></tr>
-        <tr><td>Enabled, nothing moves</td><td>Factory-default the devices in Tuner X, and check their firmware.</td></tr>
+        <tr><td>Enabled, nothing moves</td><td>Factory-default the devices in Tuner X, and check their firmware is 26.70.x (flashed with Phoenix Tuner X <b>Preview</b>), matching the code’s Phoenix 26.70.0-alpha-2.</td></tr>
         <tr><td>Push rejected</td><td>Someone pushed first: <code>git pull</code>, then push again.</td></tr>
       </table></div>
     </section>

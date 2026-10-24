@@ -16,6 +16,8 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 'Rub
 .hero .cmd { font-family: 'JetBrains Mono', 'Courier New', monospace; color: var(--orange); margin: 0 0 12px; }
 .hero h1 { font-size: clamp(32px, 6vw, 52px); line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
 .hero p { color: var(--hero-muted); max-width: 60ch; margin: 0; font-size: 18px; }
+.hero p.repo { margin-top: 16px; }
+.hero p.repo a { color: var(--orange); font-weight: 500; }
 main { padding: 32px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 28px; }
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
@@ -38,6 +40,7 @@ a { color: var(--accent); }
     <p class="cmd">$ gradlew run -PhwSim</p>
     <h1>First robot course</h1>
     <p>From your first clone to driving a swerve chassis with code you wrote, one small step at a time.</p>
+    <p class="repo"><a href="https://github.com/mikegrundvig/2611-first-bot">The code on GitHub →</a></p>
   </div>
 </header>
 <main>
@@ -71,7 +74,7 @@ a { color: var(--accent); }
   <section class="code">
     <h2>The code</h2>
     <p>The four steps live in the repository, ready to clone:</p>
-    <p><code>https://github.com/mikegrundvig/2611-first-bot</code></p>
+    <p><a href="https://github.com/mikegrundvig/2611-first-bot"><code>https://github.com/mikegrundvig/2611-first-bot</code></a></p>
   </section>
 </main>
 </body>
