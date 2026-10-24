@@ -21,7 +21,7 @@ public class Step1OneMotor extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double stick = -gamepad.getLeftY(); // pushed forward reads negative, so flip it
-    double power = stick * 0.2; // 20% at most
+    double power = stick * 0.5; // 20% at most
     driveMotor.setControl(new DutyCycleOut(power));
   }
 }
