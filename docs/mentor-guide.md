@@ -37,7 +37,7 @@ How to take beginners from "never cloned a repo" to driving the swerve chassis w
 ### The chassis
 - [ ] On blocks, wheels clear of everything. Battery charged.
 - [ ] CANivore on the bench laptop's USB; Tuner X lists it. Note its name (code assumes `canivore`).
-- [ ] Every device on Phoenix **26.70.x** firmware, flashed with Phoenix Tuner X **Preview 2026.10.x** (the regular Tuner X doesn't offer it), to match the code's Phoenix 6 library **26.70.0-alpha-2**. Then **factory default** each one (clears last season's settings and the FRC lock).
+- [ ] Every device on Phoenix firmware **26.70.0.0** (Tuner X lists the files as `<device>-26.70.0.0-PostSeason2026.crf`), flashed with Phoenix Tuner X **Preview 2026.10.x** (the regular Tuner X doesn't offer it), to match the code's Phoenix 6 library **26.70.0-alpha-2**. Then **factory default** each one (clears last season's settings and the FRC lock).
 - [ ] In Tuner X, read the IDs and compare with the top of `Step1OneMotor.java` and `ChassisRobot.java`: drive 23, steer 24, CANcoder 12 (front left), Pigeon 1. Fix the code if different.
 - [ ] **Run Step 1 yourself first.** `gradlew.bat run -PhwSim`, drag the gamepad onto Joystick 0, click Teleoperated, push the stick: the front-left wheel spins at 20%. If it doesn't, fix it now, not in front of the room.
 - [ ] Run Step 2 and turn the front-left wheel by hand: the printed angle should change, and read near 0 pointing straight ahead.
@@ -166,7 +166,7 @@ Each pair makes one change on their own branch, pushes it, and watches it run on
 | First build takes forever | Downloading ~1 GB | Do it before the session, on good internet |
 | `CANivore … not seen` | USB, or name mismatch | Check cable, Tuner X lists it, name matches the code |
 | `CAN frame not received` | Wrong CAN ID or no power | Compare IDs with Tuner X |
-| Enabled, nothing moves | FRC lock or old firmware | Factory default, firmware 26.70.x |
+| Enabled, nothing moves | FRC lock or old firmware | Factory default; firmware 26.70.0.0 (PostSeason2026) |
 | Step 3 wheel spins and never settles | Steering motor and CANcoder disagree on direction | Disable. Turn the wheel by hand and watch the CANcoder (Step 2) and the steer motor's position (Tuner X): they must move the same way. Invert the one that's wrong (motor `Inverted` or CANcoder `SensorDirection`) |
 | Gamepad does nothing | Not on Joystick 0 | Drag it onto Joystick 0 in the simulator window |
 | Push rejected in GitHub Desktop | Someone pushed first | Fetch, Pull, then Push |
