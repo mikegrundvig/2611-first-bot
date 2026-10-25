@@ -59,8 +59,14 @@ This spins real motors, so a mentor sets it up, the first time following the run
    Tuner X.
 3. The chassis's **CANivore is plugged into the laptop's USB**.
 4. Run **Run on chassis** (or type `gradlew.bat run -PhwSim` in a terminal).
-5. In the simulator window that opens, drag your gamepad onto **Joystick 0**, then click
-   **Teleoperated** to enable. Click **Disabled** to stop.
+5. In the simulator window that opens, find your gamepad in the **System Joysticks** list and drag
+   it onto **Joystick[0]**. Until you do, the program sees no stick at all.
+6. Click **Teleoperated** to enable. It can look enabled when it isn't: check that the robot state
+   really says Teleoperated, or in Phoenix Tuner X that the motor's **Robot Enable** reads True.
+   Click **Disabled** to stop.
+
+While the program runs, it holds the CANivore. To use Phoenix Tuner X at the same time, point Tuner
+X at `localhost` (the program shares the devices with it), not at the CANivore over USB.
 
 The CAN IDs and other numbers at the top of each step are copied from another robot. If nothing
 moves, check them in Phoenix Tuner X.

@@ -39,7 +39,7 @@ How to take beginners from "never cloned a repo" to driving the swerve chassis w
 - [ ] CANivore on the bench laptop's USB; Tuner X lists it. Note its name (code assumes `canivore`).
 - [ ] Every device on Phoenix firmware **26.70.0.0** (Tuner X lists the files as `<device>-26.70.0.0-PostSeason2026.crf`), flashed with Phoenix Tuner X **Preview 2026.10.x** (the regular Tuner X doesn't offer it), to match the code's Phoenix 6 library **26.70.0-alpha-2**. Then **factory default** each one (clears last season's settings and the FRC lock).
 - [ ] In Tuner X, read the IDs and compare with the top of `Step1OneMotor.java` and `ChassisRobot.java`: drive 23, steer 24, CANcoder 12 (front left), Pigeon 1. Fix the code if different.
-- [ ] **Run Step 1 yourself first.** `gradlew.bat run -PhwSim`, drag the gamepad onto Joystick 0, click Teleoperated, push the stick: the front-left wheel spins at 20%. If it doesn't, fix it now, not in front of the room.
+- [ ] **Run Step 1 yourself first.** Close Tuner X (or point it at `localhost`), `gradlew.bat run -PhwSim`, drag the gamepad from System Joysticks onto Joystick[0], click Teleoperated and check it really is (Tuner X on `localhost`: Robot Enable True), push the stick: the front-left wheel spins at 20%. If it doesn't, fix it now, not in front of the room.
 - [ ] Run Step 2 and turn the front-left wheel by hand: the printed angle should change, and read near 0 pointing straight ahead.
 - [ ] Run Step 3, press A. The wheel should turn and **settle**. If it keeps spinning, the steering and the CANcoder disagree on direction: stop, and fix before showing students.
 - [ ] Test that a breakpoint stops the motors (IntelliJ: Debug instead of Run, breakpoint in `teleopPeriodic`): the wheel should stop within a fraction of a second.
@@ -168,7 +168,8 @@ Each pair makes one change on their own branch, pushes it, and watches it run on
 | `CAN frame not received` | Wrong CAN ID or no power | Compare IDs with Tuner X |
 | Enabled, nothing moves | FRC lock or old firmware | Factory default; firmware 26.70.0.0 (PostSeason2026) |
 | Step 3 wheel spins and never settles | Steering motor and CANcoder disagree on direction | Disable. Turn the wheel by hand and watch the CANcoder (Step 2) and the steer motor's position (Tuner X): they must move the same way. Invert the one that's wrong (motor `Inverted` or CANcoder `SensorDirection`) |
-| Gamepad does nothing | Not on Joystick 0 | Drag it onto Joystick 0 in the simulator window |
+| `CAN bus Failed to Connect: canivore` | Phoenix Tuner X (over USB) or an earlier run has the CANivore open | Close Tuner X and stop earlier runs, replug the CANivore. While the program runs, point Tuner X at `localhost` |
+| Looks enabled, nothing moves | The gamepad isn't on Joystick[0], or the robot isn't really enabled | Drag the gamepad from System Joysticks onto Joystick[0]; click Teleoperated; in Tuner X (`localhost`) the Talon's Robot Enable should read True |
 | Push rejected in GitHub Desktop | Someone pushed first | Fetch, Pull, then Push |
 | "Conflict" when pulling or merging | Two people changed the same lines | Do it together on screen the first time |
 | Student can't see the repo | Invite not accepted | Check their email for the GitHub invite |
